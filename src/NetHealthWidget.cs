@@ -1,5 +1,6 @@
 using NetHealth.Models;
 using NetHealth.Services;
+using NetHealth.UI;
 
 namespace NetHealth;
 
@@ -8,7 +9,7 @@ public sealed class NetHealthWidget : Form
     private readonly NotifyIcon _trayIcon;
     private readonly ContextMenuStrip _contextMenu;
     private readonly MonitorService _monitorService;
-    private readonly AppConfig _config;
+    private AppConfig _config;
 
     public NetHealthWidget()
     {
@@ -44,6 +45,7 @@ public sealed class NetHealthWidget : Form
         menu.Items.Add("Status: Initializing...").Enabled = false;
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("Check Now", null, (_, _) => _ = Task.Run(() => _monitorService.Start()));
+        menu.Items.Add("Configure...", null, OnConfigure);
         menu.Items.Add("Open Config Folder", null, OnOpenConfig);
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("Exit", null, OnExit);
@@ -112,6 +114,19 @@ public sealed class NetHealthWidget : Form
             "NetHealth Status",
             MessageBoxButtons.OK,
             icon);
+    }
+
+    private void OnConfigure(object? sender, EventArgs e)
+    {
+        using var dlg = new ConfigDialog(_config);
+        if (dlg.ShowDialog() == DialogResult.OK)
+        {
+            _config = dlg.GetUpdatedConfig();
+            ConfigService.Save(_config);
+            _monitorService.Configure(_config);
+            _monitorService.Start();
+            NotificationService.Reset();
+        }
     }
 
     private static void OnOpenConfig(object? sender, EventArgs e)

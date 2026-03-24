@@ -23,7 +23,9 @@ public static class ConfigService
 
     public static void Save(AppConfig config)
     {
-        var configPath = GetConfigPath();
+        // Always save to the local override file
+        var appDir = AppContext.BaseDirectory;
+        var configPath = Path.Combine(appDir, "config", "targets.local.json");
         var dir = Path.GetDirectoryName(configPath);
         if (dir != null && !Directory.Exists(dir))
             Directory.CreateDirectory(dir);
