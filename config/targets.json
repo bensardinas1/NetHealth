@@ -1,0 +1,39 @@
+{
+  "pollIntervalSeconds": 30,
+  "showOverlay": true,
+  "notifyOnChange": true,
+  "targets": [
+    {
+      "name": "Default Gateway",
+      "type": "ping",
+      "host": "192.168.1.1",
+      "timeoutMs": 2000,
+      "thresholdMs": 100,
+      "enabled": true
+    },
+    {
+      "name": "Cloudflare DNS",
+      "type": "ping",
+      "host": "1.1.1.1",
+      "timeoutMs": 2000,
+      "thresholdMs": 50,
+      "enabled": true
+    },
+    {
+      "name": "DNS Resolution",
+      "type": "dns",
+      "host": "1.1.1.1",
+      "resolve": "google.com",
+      "timeoutMs": 3000,
+      "enabled": true
+    },
+    {
+      "name": "GitHub",
+      "type": "http",
+      "url": "https://github.com",
+      "timeoutMs": 5000,
+      "expectedStatusCode": 200,
+      "enabled": true
+    }
+  ]
+}
