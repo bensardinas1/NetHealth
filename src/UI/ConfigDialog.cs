@@ -42,8 +42,8 @@ public sealed class ConfigDialog : Form
         };
 
         Text = "NetHealth Configuration";
-        MinimumSize = new Size(580, 440);
-        Size = new Size(620, 520);
+        MinimumSize = new Size(700, 440);
+        Size = new Size(720, 520);
         StartPosition = FormStartPosition.CenterScreen;
 
         // === Global Settings Group ===
@@ -65,11 +65,11 @@ public sealed class ConfigDialog : Form
             MultiSelect = false,
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right
         };
-        _lstTargets.Columns.Add("Name", 130);
+        _lstTargets.Columns.Add("Name", 150);
         _lstTargets.Columns.Add("Type", 55);
-        _lstTargets.Columns.Add("Target", 180);
-        _lstTargets.Columns.Add("Poll (s)", 55);
-        _lstTargets.Columns.Add("On", 35);
+        _lstTargets.Columns.Add("Target", 230);
+        _lstTargets.Columns.Add("Poll (s)", 65);
+        _lstTargets.Columns.Add("On", 42);
         _lstTargets.DoubleClick += OnEdit;
         _grpTargets.Controls.Add(_lstTargets);
 
