@@ -1,5 +1,4 @@
 {
-  "pollIntervalSeconds": 30,
   "showOverlay": true,
   "notifyOnChange": true,
   "targets": [
@@ -9,6 +8,7 @@
       "host": "192.168.1.1",
       "timeoutMs": 2000,
       "thresholdMs": 100,
+      "pollIntervalSeconds": 30,
       "enabled": true
     },
     {
@@ -17,6 +17,7 @@
       "host": "1.1.1.1",
       "timeoutMs": 2000,
       "thresholdMs": 50,
+      "pollIntervalSeconds": 30,
       "enabled": true
     },
     {
@@ -25,6 +26,7 @@
       "host": "1.1.1.1",
       "resolve": "google.com",
       "timeoutMs": 3000,
+      "pollIntervalSeconds": 30,
       "enabled": true
     },
     {
@@ -33,6 +35,7 @@
       "url": "https://github.com",
       "timeoutMs": 5000,
       "expectedStatusCode": 200,
+      "pollIntervalSeconds": 60,
       "enabled": true
     }
   ]

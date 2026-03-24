@@ -4,7 +4,6 @@ namespace NetHealth.Models;
 
 public sealed class AppConfig
 {
-    public int PollIntervalSeconds { get; set; } = 30;
     public bool ShowOverlay { get; set; } = true;
     public bool NotifyOnChange { get; set; } = true;
     public List<TargetConfig> Targets { get; set; } = [];
@@ -15,6 +14,7 @@ public sealed class TargetConfig
     public string Name { get; set; } = "";
     public string Type { get; set; } = "ping";
     public bool Enabled { get; set; } = true;
+    public int PollIntervalSeconds { get; set; } = 30;
 
     // Ping
     public string? Host { get; set; }

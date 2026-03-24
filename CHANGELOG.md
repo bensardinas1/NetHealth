@@ -4,6 +4,19 @@ All notable changes to NetHealth will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.0] - 2026-03-24
+
+### Changed
+- Poll interval moved from global to per-target (default: 30 seconds)
+- Config dialog is now resizable with proper anchored layout
+- All numeric fields replaced with plain text inputs (no up/down spinners)
+- Target list now shows poll interval and enabled columns
+- Each target polls independently on its own async timer
+- Double-click a target row to edit it
+
+### Fixed
+- Buttons no longer squished at small dialog sizes
+
 ## [0.1.0] - 2026-03-24
 
 ### Added
