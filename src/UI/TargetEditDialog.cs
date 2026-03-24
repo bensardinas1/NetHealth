@@ -76,8 +76,9 @@ public sealed class TargetEditDialog : Form
         _panelPing = new Panel { Left = 0, Top = y, Width = 420, Height = 65, Visible = false };
         var pingY = 0;
         _panelPing.Controls.Add(new Label { Text = "Host / IP:", Left = labelX, Top = pingY + 3, AutoSize = true });
-        _txtHost = new TextBox { Left = fieldX, Top = pingY, Width = fieldW };
+        _txtHost = new TextBox { Left = fieldX, Top = pingY, Width = 160 };
         _panelPing.Controls.Add(_txtHost);
+        _panelPing.Controls.Add(new Label { Text = "(\"auto\" = detect gateway)", Left = fieldX + 165, Top = pingY + 3, AutoSize = true, ForeColor = Color.Gray });
         pingY += 30;
         _panelPing.Controls.Add(new Label { Text = "Threshold (ms):", Left = labelX, Top = pingY + 3, AutoSize = true });
         _txtThreshold = new TextBox { Left = fieldX, Top = pingY, Width = 80, Text = "100" };

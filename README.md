@@ -50,7 +50,7 @@ Edit `config/targets.json` to define your monitored targets, or use the **Config
     {
       "name": "Gateway",
       "type": "ping",
-      "host": "192.168.1.1",
+      "host": "auto",
       "timeoutMs": 2000,
       "thresholdMs": 100,
       "pollIntervalSeconds": 30,
@@ -101,7 +101,7 @@ Each target has its own poll interval and can be individually enabled/disabled.
 
 | Type | Description | Key Fields |
 |------|-------------|------------|
-| `ping` | ICMP echo request | `host`, `thresholdMs` (latency above = degraded) |
+| `ping` | ICMP echo request | `host` (`"auto"` = detect gateway), `thresholdMs` (latency above = degraded) |
 | `dns` | DNS name resolution | `host` (DNS server), `resolve` (domain to resolve) |
 | `http` | HTTP HEAD request | `url`, `expectedStatusCode` |
 

@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using System.Text.Json;
 using NetHealth.Models;
 
@@ -18,7 +19,19 @@ public static class ConfigService
             return new AppConfig();
 
         var json = File.ReadAllText(configPath);
-        return JsonSerializer.Deserialize<AppConfig>(json, JsonOptions) ?? new AppConfig();
+        var config = JsonSerializer.Deserialize<AppConfig>(json, JsonOptions) ?? new AppConfig();
+
+        // Resolve "auto" gateway placeholders
+        foreach (var t in config.Targets)
+        {
+            if (string.Equals(t.Host, "auto", StringComparison.OrdinalIgnoreCase)
+                && t.Type.Equals("ping", StringComparison.OrdinalIgnoreCase))
+            {
+                t.Host = DetectDefaultGateway() ?? "192.168.1.1";
+            }
+        }
+
+        return config;
     }
 
     public static void Save(AppConfig config)
@@ -43,5 +56,22 @@ public static class ConfigService
             return localPath;
 
         return Path.Combine(appDir, "config", "targets.json");
+    }
+
+    public static string? DetectDefaultGateway()
+    {
+        try
+        {
+            return NetworkInterface.GetAllNetworkInterfaces()
+                .Where(n => n.OperationalStatus == OperationalStatus.Up
+                         && n.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                .SelectMany(n => n.GetIPProperties().GatewayAddresses)
+                .Select(g => g.Address.ToString())
+                .FirstOrDefault(a => a != "0.0.0.0" && !a.Contains(':'));
+        }
+        catch
+        {
+            return null;
+        }
     }
 }

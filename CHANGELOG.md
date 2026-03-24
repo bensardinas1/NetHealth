@@ -4,6 +4,13 @@ All notable changes to NetHealth will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.1] - 2026-03-24
+
+### Added
+- Auto-detect default gateway from the system network stack
+- Set host to `"auto"` on ping targets to use the detected gateway
+- Hint label in target editor showing `("auto" = detect gateway)`
+
 ## [0.2.0] - 2026-03-24
 
 ### Changed
