@@ -13,9 +13,10 @@
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <RootNamespace>NetHealth</RootNamespace>
     <AssemblyName>NetHealth</AssemblyName>
-    <Version>0.1.0</Version>
+    <Version>0.3.1</Version>
     <Authors>bensardinas1</Authors>
     <Description>Lightweight Windows 11 network health monitoring widget</Description>
+    <ApplicationIcon>assets\NetHealth.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

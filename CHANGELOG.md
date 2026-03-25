@@ -4,6 +4,15 @@ All notable changes to NetHealth will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.1] - 2026-03-24
+
+### Added
+- Application icon (`.ico`) for exe and taskbar display
+- GitHub Actions release workflow: push a `v*` tag to auto-publish a GitHub Release with the single-file exe
+
+### Changed
+- Version bumped to 0.3.0 in project file (was still 0.1.0)
+
 ## [0.3.0] - 2026-03-24
 
 ### Added
