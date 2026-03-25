@@ -46,6 +46,7 @@ public sealed class NetHealthWidget : Form
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("Check Now", null, (_, _) => _ = Task.Run(() => _monitorService.Start()));
         menu.Items.Add("Configure...", null, OnConfigure);
+        menu.Items.Add("Pin to Taskbar...", null, OnPinToTaskbar);
         menu.Items.Add("Open Config Folder", null, OnOpenConfig);
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("Exit", null, OnExit);
@@ -85,35 +86,19 @@ public sealed class NetHealthWidget : Form
         }
     }
 
+    private StatusDialog? _statusDialog;
+
     private void OnTrayDoubleClick(object? sender, EventArgs e)
     {
-        // Show a simple status popup
-        var results = _monitorService.GetLastResults();
-        if (results.Count == 0)
+        if (_statusDialog != null && !_statusDialog.IsDisposed)
         {
-            MessageBox.Show("No results yet. Monitoring is starting...", "NetHealth",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            _statusDialog.Activate();
             return;
         }
 
-        var lines = results.Values
-            .OrderBy(r => r.State)
-            .Select(r => $"{StateIcon(r.State)} {r.TargetName}\n   {r.Detail}\n   Latency: {r.LatencyMs}ms | {r.TimestampUtc:HH:mm:ss} UTC");
-
-        var overall = _monitorService.GetOverallState();
-        var icon = overall switch
-        {
-            HealthState.Healthy => MessageBoxIcon.Information,
-            HealthState.Degraded => MessageBoxIcon.Warning,
-            HealthState.Unhealthy => MessageBoxIcon.Error,
-            _ => MessageBoxIcon.Question
-        };
-
-        MessageBox.Show(
-            $"Overall: {overall}\n\n{string.Join("\n\n", lines)}",
-            "NetHealth Status",
-            MessageBoxButtons.OK,
-            icon);
+        _statusDialog = new StatusDialog(_monitorService);
+        _statusDialog.FormClosed += (_, _) => { _statusDialog = null; };
+        _statusDialog.Show();
     }
 
     private void OnConfigure(object? sender, EventArgs e)
@@ -142,6 +127,16 @@ public sealed class NetHealthWidget : Form
         _trayIcon.Visible = false;
         _trayIcon.Dispose();
         Application.Exit();
+    }
+
+    private static void OnPinToTaskbar(object? sender, EventArgs e)
+    {
+        // Windows 11 controls tray icon pinning via Settings — open it for the user
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = "ms-settings:taskbar",
+            UseShellExecute = true
+        });
     }
 
     protected override void OnFormClosing(FormClosingEventArgs e)

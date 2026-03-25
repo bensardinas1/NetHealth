@@ -29,13 +29,13 @@ public sealed class TargetEditDialog : Form
         MaximizeBox = false;
         MinimizeBox = false;
         StartPosition = FormStartPosition.CenterParent;
-        Size = new Size(440, 440);
+        Size = new Size(550, 422);
         Padding = new Padding(12);
 
         var y = 12;
         const int labelX = 12;
-        const int fieldX = 140;
-        const int fieldW = 260;
+        const int fieldX = 155;
+        const int fieldW = 340;
 
         // --- Name ---
         AddLabel("Name:", labelX, y);
@@ -62,31 +62,31 @@ public sealed class TargetEditDialog : Form
 
         // --- Poll Interval ---
         AddLabel("Poll Interval (sec):", labelX, y);
-        _txtPollInterval = new TextBox { Left = fieldX, Top = y, Width = 80, Text = "30" };
+        _txtPollInterval = new TextBox { Left = fieldX, Top = y, Width = 100, Text = "30" };
         Controls.Add(_txtPollInterval);
         y += 30;
 
         // --- Timeout ---
         AddLabel("Timeout (ms):", labelX, y);
-        _txtTimeout = new TextBox { Left = fieldX, Top = y, Width = 80, Text = "2000" };
+        _txtTimeout = new TextBox { Left = fieldX, Top = y, Width = 100, Text = "2000" };
         Controls.Add(_txtTimeout);
         y += 30;
 
         // === Ping Panel ===
-        _panelPing = new Panel { Left = 0, Top = y, Width = 420, Height = 65, Visible = false };
+        _panelPing = new Panel { Left = 0, Top = y, Width = 530, Height = 65, Visible = false };
         var pingY = 0;
         _panelPing.Controls.Add(new Label { Text = "Host / IP:", Left = labelX, Top = pingY + 3, AutoSize = true });
-        _txtHost = new TextBox { Left = fieldX, Top = pingY, Width = 160 };
+        _txtHost = new TextBox { Left = fieldX, Top = pingY, Width = 190 };
         _panelPing.Controls.Add(_txtHost);
-        _panelPing.Controls.Add(new Label { Text = "(\"auto\" = detect gateway)", Left = fieldX + 165, Top = pingY + 3, AutoSize = true, ForeColor = Color.Gray });
+        _panelPing.Controls.Add(new Label { Text = "(\"auto\" = detect gateway)", Left = fieldX + 195, Top = pingY + 3, AutoSize = true, ForeColor = Color.Gray });
         pingY += 30;
         _panelPing.Controls.Add(new Label { Text = "Threshold (ms):", Left = labelX, Top = pingY + 3, AutoSize = true });
-        _txtThreshold = new TextBox { Left = fieldX, Top = pingY, Width = 80, Text = "100" };
+        _txtThreshold = new TextBox { Left = fieldX, Top = pingY, Width = 100, Text = "100" };
         _panelPing.Controls.Add(_txtThreshold);
         Controls.Add(_panelPing);
 
         // === DNS Panel ===
-        _panelDns = new Panel { Left = 0, Top = y, Width = 420, Height = 65, Visible = false };
+        _panelDns = new Panel { Left = 0, Top = y, Width = 530, Height = 65, Visible = false };
         var dnsY = 0;
         _panelDns.Controls.Add(new Label { Text = "DNS Server:", Left = labelX, Top = dnsY + 3, AutoSize = true });
         var txtDnsHost = new TextBox { Name = "txtDnsHost", Left = fieldX, Top = dnsY, Width = fieldW };
@@ -98,20 +98,20 @@ public sealed class TargetEditDialog : Form
         Controls.Add(_panelDns);
 
         // === HTTP Panel ===
-        _panelHttp = new Panel { Left = 0, Top = y, Width = 420, Height = 65, Visible = false };
+        _panelHttp = new Panel { Left = 0, Top = y, Width = 530, Height = 65, Visible = false };
         var httpY = 0;
         _panelHttp.Controls.Add(new Label { Text = "URL:", Left = labelX, Top = httpY + 3, AutoSize = true });
         _txtUrl = new TextBox { Left = fieldX, Top = httpY, Width = fieldW };
         _panelHttp.Controls.Add(_txtUrl);
         httpY += 30;
         _panelHttp.Controls.Add(new Label { Text = "Expected Status:", Left = labelX, Top = httpY + 3, AutoSize = true });
-        _txtExpectedStatus = new TextBox { Left = fieldX, Top = httpY, Width = 80, Text = "200" };
+        _txtExpectedStatus = new TextBox { Left = fieldX, Top = httpY, Width = 100, Text = "200" };
         _panelHttp.Controls.Add(_txtExpectedStatus);
         Controls.Add(_panelHttp);
 
         // --- Buttons ---
-        var btnOk = new Button { Text = "OK", DialogResult = DialogResult.OK, Left = 220, Top = 360, Width = 90, Height = 30 };
-        var btnCancel = new Button { Text = "Cancel", DialogResult = DialogResult.Cancel, Left = 320, Top = 360, Width = 90, Height = 30 };
+        var btnOk = new Button { Text = "OK", DialogResult = DialogResult.OK, Left = 305, Top = 315, Width = 90, Height = 30 };
+        var btnCancel = new Button { Text = "Cancel", DialogResult = DialogResult.Cancel, Left = 405, Top = 315, Width = 90, Height = 30 };
         btnOk.Click += OnOk;
         Controls.Add(btnOk);
         Controls.Add(btnCancel);

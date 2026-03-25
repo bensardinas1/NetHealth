@@ -27,4 +27,13 @@ public sealed class TargetConfig
     // HTTP
     public string? Url { get; set; }
     public int ExpectedStatusCode { get; set; } = 200;
+
+    [JsonIgnore]
+    public string DisplayAddress => Type.ToLowerInvariant() switch
+    {
+        "ping" => Host ?? "",
+        "dns" => Resolve ?? "",
+        "http" => Url ?? "",
+        _ => ""
+    };
 }

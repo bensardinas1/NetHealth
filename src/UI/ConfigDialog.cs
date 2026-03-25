@@ -42,8 +42,8 @@ public sealed class ConfigDialog : Form
         };
 
         Text = "NetHealth Configuration";
-        MinimumSize = new Size(700, 440);
-        Size = new Size(720, 520);
+        MinimumSize = new Size(734, 440);
+        Size = new Size(754, 520);
         StartPosition = FormStartPosition.CenterScreen;
 
         // === Global Settings Group ===
@@ -73,34 +73,34 @@ public sealed class ConfigDialog : Form
         _lstTargets.DoubleClick += OnEdit;
         _grpTargets.Controls.Add(_lstTargets);
 
-        _btnAdd = new Button { Text = "Add", Width = 90, Height = 30, Anchor = AnchorStyles.Top | AnchorStyles.Right };
+        _btnAdd = new Button { Text = "Add", Width = 104, Height = 30, Anchor = AnchorStyles.Top | AnchorStyles.Right };
         _btnAdd.Click += OnAdd;
         _grpTargets.Controls.Add(_btnAdd);
 
-        _btnEdit = new Button { Text = "Edit", Width = 90, Height = 30, Anchor = AnchorStyles.Top | AnchorStyles.Right };
+        _btnEdit = new Button { Text = "Edit", Width = 104, Height = 30, Anchor = AnchorStyles.Top | AnchorStyles.Right };
         _btnEdit.Click += OnEdit;
         _grpTargets.Controls.Add(_btnEdit);
 
-        _btnRemove = new Button { Text = "Remove", Width = 90, Height = 30, Anchor = AnchorStyles.Top | AnchorStyles.Right };
+        _btnRemove = new Button { Text = "Remove", Width = 104, Height = 30, Anchor = AnchorStyles.Top | AnchorStyles.Right };
         _btnRemove.Click += OnRemove;
         _grpTargets.Controls.Add(_btnRemove);
 
-        _btnMoveUp = new Button { Text = "Move Up", Width = 90, Height = 30, Anchor = AnchorStyles.Top | AnchorStyles.Right };
+        _btnMoveUp = new Button { Text = "Move \u02C4", Width = 104, Height = 30, Anchor = AnchorStyles.Top | AnchorStyles.Right };
         _btnMoveUp.Click += OnMoveUp;
         _grpTargets.Controls.Add(_btnMoveUp);
 
-        _btnMoveDown = new Button { Text = "Move Down", Width = 90, Height = 30, Anchor = AnchorStyles.Top | AnchorStyles.Right };
+        _btnMoveDown = new Button { Text = "Move \u02C5", Width = 104, Height = 30, Anchor = AnchorStyles.Top | AnchorStyles.Right };
         _btnMoveDown.Click += OnMoveDown;
         _grpTargets.Controls.Add(_btnMoveDown);
 
         Controls.Add(_grpTargets);
 
         // === Bottom Buttons ===
-        _btnSave = new Button { Text = "Save", Width = 90, Height = 30, DialogResult = DialogResult.OK, Anchor = AnchorStyles.Bottom | AnchorStyles.Right };
+        _btnSave = new Button { Text = "Save", Width = 104, Height = 30, DialogResult = DialogResult.OK, Anchor = AnchorStyles.Bottom | AnchorStyles.Right };
         _btnSave.Click += OnSave;
         Controls.Add(_btnSave);
 
-        _btnCancel = new Button { Text = "Cancel", Width = 90, Height = 30, DialogResult = DialogResult.Cancel, Anchor = AnchorStyles.Bottom | AnchorStyles.Right };
+        _btnCancel = new Button { Text = "Cancel", Width = 104, Height = 30, DialogResult = DialogResult.Cancel, Anchor = AnchorStyles.Bottom | AnchorStyles.Right };
         Controls.Add(_btnCancel);
         AcceptButton = _btnSave;
         CancelButton = _btnCancel;
@@ -122,8 +122,8 @@ public sealed class ConfigDialog : Form
         _chkNotify.SetBounds(170, 22, 170, 22);
 
         // Bottom buttons
-        _btnCancel.SetBounds(cw - pad - 90, ch - pad - 30, 90, 30);
-        _btnSave.SetBounds(cw - pad - 90 - 8 - 90, ch - pad - 30, 90, 30);
+        _btnCancel.SetBounds(cw - pad - 104, ch - pad - 30, 104, 30);
+        _btnSave.SetBounds(cw - pad - 104 - 8 - 104, ch - pad - 30, 104, 30);
 
         // Targets group fills remaining space
         var targetsTop = _grpGlobal.Bottom + pad;
@@ -131,12 +131,12 @@ public sealed class ConfigDialog : Form
         _grpTargets.SetBounds(pad, targetsTop, cw - pad * 2, targetsBottom - targetsTop);
 
         // Buttons inside targets group
-        var btnLeft = _grpTargets.Width - pad - 90;
-        _btnAdd.SetBounds(btnLeft, 24, 90, 30);
-        _btnEdit.SetBounds(btnLeft, 60, 90, 30);
-        _btnRemove.SetBounds(btnLeft, 96, 90, 30);
-        _btnMoveUp.SetBounds(btnLeft, 142, 90, 30);
-        _btnMoveDown.SetBounds(btnLeft, 178, 90, 30);
+        var btnLeft = _grpTargets.Width - pad - 104;
+        _btnAdd.SetBounds(btnLeft, 24, 104, 30);
+        _btnEdit.SetBounds(btnLeft, 60, 104, 30);
+        _btnRemove.SetBounds(btnLeft, 96, 104, 30);
+        _btnMoveUp.SetBounds(btnLeft, 142, 104, 30);
+        _btnMoveDown.SetBounds(btnLeft, 178, 104, 30);
 
         // ListView fills targets group minus button column
         _lstTargets.SetBounds(pad, 24, btnLeft - pad - 8, _grpTargets.Height - 24 - pad);

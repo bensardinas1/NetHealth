@@ -46,7 +46,7 @@ public sealed class DnsMonitor : INetworkMonitor
                 TargetName = TargetName,
                 State = HealthState.Healthy,
                 LatencyMs = sw.ElapsedMilliseconds,
-                Detail = $"Resolved {_resolve} → {addresses[0]} in {sw.ElapsedMilliseconds}ms"
+                Detail = $"Resolved {_resolve} →\r\n   {addresses[0]} in {sw.ElapsedMilliseconds}ms"
             };
         }
         catch (OperationCanceledException)

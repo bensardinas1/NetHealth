@@ -7,6 +7,8 @@ public sealed class MonitorService : IDisposable
 {
     private readonly List<(INetworkMonitor Monitor, int IntervalSeconds)> _monitors = [];
     private readonly Dictionary<string, HealthStatus> _lastResults = [];
+    private readonly Dictionary<string, TargetStats> _stats = [];
+    private readonly Dictionary<string, string> _targetAddresses = [];
     private CancellationTokenSource? _cts;
     private readonly List<Task> _pollTasks = [];
 
@@ -15,6 +17,7 @@ public sealed class MonitorService : IDisposable
     public void Configure(AppConfig config)
     {
         _monitors.Clear();
+        _targetAddresses.Clear();
 
         foreach (var target in config.Targets.Where(t => t.Enabled))
         {
@@ -27,7 +30,10 @@ public sealed class MonitorService : IDisposable
             };
 
             if (monitor != null)
+            {
                 _monitors.Add((monitor, target.PollIntervalSeconds));
+                _targetAddresses[target.Name] = target.DisplayAddress;
+            }
         }
     }
 
@@ -66,6 +72,12 @@ public sealed class MonitorService : IDisposable
     public IReadOnlyDictionary<string, HealthStatus> GetLastResults()
         => _lastResults;
 
+    public IReadOnlyDictionary<string, TargetStats> GetStats()
+        => _stats;
+
+    public IReadOnlyDictionary<string, string> GetTargetAddresses()
+        => _targetAddresses;
+
     private async Task PollLoopAsync(INetworkMonitor monitor, int intervalSeconds, CancellationToken ct)
     {
         while (!ct.IsCancellationRequested)
@@ -74,7 +86,15 @@ public sealed class MonitorService : IDisposable
             {
                 var result = await monitor.CheckAsync(ct);
                 lock (_lastResults)
+                {
                     _lastResults[monitor.TargetName] = result;
+                    if (!_stats.TryGetValue(monitor.TargetName, out var stats))
+                    {
+                        stats = new TargetStats();
+                        _stats[monitor.TargetName] = stats;
+                    }
+                    stats.Record(result);
+                }
                 StatusChanged?.Invoke(_lastResults);
             }
             catch (OperationCanceledException) { break; }
