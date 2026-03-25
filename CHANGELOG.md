@@ -4,6 +4,26 @@ All notable changes to NetHealth will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.0] - 2026-03-24
+
+### Added
+- Live-updating status dialog (refreshes every 2 seconds while open)
+- Rolling statistics per target: last latency, 5-minute average, last failure time
+- IP/host/URL shown in brackets next to each target name in status dialog
+- Local time displayed alongside UTC for all timestamps
+- Selectable text in status dialog (read-only TextBox)
+- Auto-sizing status dialog: fits content exactly, scrollbar only above 900px
+- Single-instance status window: double-click activates existing window
+- "Pin to Taskbar..." tray menu item opens Windows Settings for tray icon pinning
+
+### Changed
+- Status dialog replaces static MessageBox with proper live Form
+- Config dialog buttons widened 15% (90→104px) with arrow labels (Move ˄ / Move ˅)
+- Config dialog widened to accommodate larger buttons
+- Target edit dialog reduced 20% in height with repositioned buttons
+- DNS resolution detail now line-wraps after arrow for long IPv6 addresses
+- OK button in status dialog properly closes the non-modal window
+
 ## [0.2.1] - 2026-03-24
 
 ### Added

@@ -9,8 +9,12 @@ A lightweight Windows 11 system tray widget that monitors the health and accessi
 - **DNS Resolution Check** — verifies DNS is resolving correctly
 - **HTTP Endpoint Health** — HEAD requests to configured URLs with status tracking
 - **Visual Status** — tray icon changes color (green/yellow/red) based on overall health
+- **Live Status Dialog** — auto-refreshing status window (2s interval) with selectable text
+- **Rolling Statistics** — last ping, 5-minute rolling average, last failure timestamp per target
 - **Toast Notifications** — Windows notifications on state changes
-- **Configurable** — JSON-based configuration for targets, intervals, and thresholds
+- **Auto Gateway Detection** — set host to `"auto"` to detect your default gateway automatically
+- **Pin to Taskbar** — right-click menu opens Windows Settings to pin the tray icon
+- **Configurable** — JSON-based configuration or GUI dialog for targets, intervals, and thresholds
 
 ## Requirements
 
@@ -28,6 +32,29 @@ dotnet build
 ```bash
 dotnet publish -c Release -r win-x64
 ```
+
+## Tray Context Menu
+
+| Item | Action |
+|------|--------|
+| Status | Shows current overall state and target count |
+| Check Now | Restarts all monitors immediately |
+| Configure... | Opens the configuration dialog |
+| Pin to Taskbar... | Opens Windows Settings to pin the tray icon |
+| Open Config Folder | Opens the config directory in Explorer |
+| Exit | Closes the application |
+
+## Status Dialog
+
+Double-click the tray icon to open the live status window. It shows:
+
+- **Target name** with IP/host/URL in brackets
+- **Detail** — ping threshold, DNS resolution result, HTTP status code
+- **Last latency** and **5-minute rolling average**
+- **Last failure** timestamp (local + UTC) or "Never"
+- **Timestamps** in both local and UTC time
+
+The dialog auto-sizes to content (max 900px), text is selectable, and it refreshes every 2 seconds while open. Only one instance can be open at a time.
 
 ## Tray Icon Colors
 
@@ -110,6 +137,8 @@ Each target has its own poll interval and can be individually enabled/disabled.
 - **.NET 8 Self-Contained** — publishes as a single executable, no runtime needed
 - **WinForms** — lightest managed UI framework, used only for tray icon and dialogs
 - **Per-target async polling** — each target runs on its own async timer independently
+- **Live status dialog** — auto-refreshing, auto-sizing, single-instance, selectable text
+- **Rolling stats** — per-target 5-minute sliding window with failure tracking
 - **Resizable config dialog** — GUI editor for all settings, no JSON editing required
 - **~8-12 MB RAM** baseline footprint
 
