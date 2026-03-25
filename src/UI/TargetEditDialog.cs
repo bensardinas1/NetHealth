@@ -14,6 +14,7 @@ public sealed class TargetEditDialog : Form
     private readonly TextBox _txtResolve;
     private readonly TextBox _txtUrl;
     private readonly TextBox _txtExpectedStatus;
+    private readonly CheckBox _chkFollowRedirects;
 
     // Dynamic panels for type-specific fields
     private readonly Panel _panelPing;
@@ -98,7 +99,7 @@ public sealed class TargetEditDialog : Form
         Controls.Add(_panelDns);
 
         // === HTTP Panel ===
-        _panelHttp = new Panel { Left = 0, Top = y, Width = 530, Height = 65, Visible = false };
+        _panelHttp = new Panel { Left = 0, Top = y, Width = 530, Height = 95, Visible = false };
         var httpY = 0;
         _panelHttp.Controls.Add(new Label { Text = "URL:", Left = labelX, Top = httpY + 3, AutoSize = true });
         _txtUrl = new TextBox { Left = fieldX, Top = httpY, Width = fieldW };
@@ -107,6 +108,9 @@ public sealed class TargetEditDialog : Form
         _panelHttp.Controls.Add(new Label { Text = "Expected Status:", Left = labelX, Top = httpY + 3, AutoSize = true });
         _txtExpectedStatus = new TextBox { Left = fieldX, Top = httpY, Width = 100, Text = "200" };
         _panelHttp.Controls.Add(_txtExpectedStatus);
+        httpY += 30;
+        _chkFollowRedirects = new CheckBox { Text = "Follow Redirects", Left = fieldX, Top = httpY, Checked = true, AutoSize = true };
+        _panelHttp.Controls.Add(_chkFollowRedirects);
         Controls.Add(_panelHttp);
 
         // --- Buttons ---
@@ -137,6 +141,7 @@ public sealed class TargetEditDialog : Form
         _txtResolve.Text = t.Resolve ?? "";
         _txtUrl.Text = t.Url ?? "";
         _txtExpectedStatus.Text = t.ExpectedStatusCode.ToString();
+        _chkFollowRedirects.Checked = t.FollowRedirects;
 
         // Also set DNS host field
         var dnsHost = _panelDns.Controls["txtDnsHost"] as TextBox;
@@ -223,6 +228,7 @@ public sealed class TargetEditDialog : Form
                 }
                 Result.Url = _txtUrl.Text.Trim();
                 Result.ExpectedStatusCode = status;
+                Result.FollowRedirects = _chkFollowRedirects.Checked;
                 break;
         }
     }

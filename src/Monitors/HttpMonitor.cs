@@ -8,8 +8,19 @@ public sealed class HttpMonitor : INetworkMonitor
     private readonly string _url;
     private readonly int _timeoutMs;
     private readonly int _expectedStatus;
+    private readonly bool _followRedirects;
+
+    private readonly string _scheme;
 
     private static readonly HttpClient SharedClient = new()
+    {
+        DefaultRequestHeaders = { { "User-Agent", "NetHealth/0.1" } }
+    };
+
+    private static readonly HttpClient NoRedirectClient = new(new HttpClientHandler
+    {
+        AllowAutoRedirect = false
+    })
     {
         DefaultRequestHeaders = { { "User-Agent", "NetHealth/0.1" } }
     };
@@ -22,6 +33,8 @@ public sealed class HttpMonitor : INetworkMonitor
         _url = config.Url ?? throw new ArgumentException("URL is required for HTTP monitor");
         _timeoutMs = config.TimeoutMs;
         _expectedStatus = config.ExpectedStatusCode;
+        _followRedirects = config.FollowRedirects;
+        _scheme = new Uri(_url).Scheme.ToUpperInvariant();
     }
 
     public async Task<HealthStatus> CheckAsync(CancellationToken ct)
@@ -31,9 +44,10 @@ public sealed class HttpMonitor : INetworkMonitor
             using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
             cts.CancelAfter(_timeoutMs);
 
+            var client = _followRedirects ? SharedClient : NoRedirectClient;
             var sw = Stopwatch.StartNew();
             using var request = new HttpRequestMessage(HttpMethod.Head, _url);
-            using var response = await SharedClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
             sw.Stop();
 
             var statusCode = (int)response.StatusCode;
@@ -41,12 +55,13 @@ public sealed class HttpMonitor : INetworkMonitor
                 ? HealthState.Healthy
                 : HealthState.Degraded;
 
+            var scheme = _scheme;
             return new HealthStatus
             {
                 TargetName = TargetName,
                 State = state,
                 LatencyMs = sw.ElapsedMilliseconds,
-                Detail = $"HTTP {statusCode} in {sw.ElapsedMilliseconds}ms"
+                Detail = $"{scheme} {statusCode} in {sw.ElapsedMilliseconds}ms"
             };
         }
         catch (OperationCanceledException)
@@ -55,7 +70,7 @@ public sealed class HttpMonitor : INetworkMonitor
             {
                 TargetName = TargetName,
                 State = HealthState.Unhealthy,
-                Detail = $"HTTP request timed out after {_timeoutMs}ms"
+                Detail = $"{_scheme} request timed out after {_timeoutMs}ms"
             };
         }
         catch (Exception ex)

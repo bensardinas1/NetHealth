@@ -11,9 +11,14 @@
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <InvariantGlobalization>true</InvariantGlobalization>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+    <_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
     <RootNamespace>NetHealth</RootNamespace>
     <AssemblyName>NetHealth</AssemblyName>
-    <Version>0.3.1</Version>
+    <Version>0.4.0</Version>
     <Authors>bensardinas1</Authors>
     <Description>Lightweight Windows 11 network health monitoring widget</Description>
     <ApplicationIcon>assets\NetHealth.ico</ApplicationIcon>

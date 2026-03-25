@@ -7,7 +7,7 @@ A lightweight Windows 11 system tray widget that monitors the health and accessi
 - **System Tray Widget** — lives in the notification area with minimal resource footprint
 - **Ping Monitor** — ICMP ping to configured hosts (gateway, DNS servers, custom targets)
 - **DNS Resolution Check** — verifies DNS is resolving correctly
-- **HTTP Endpoint Health** — HEAD requests to configured URLs with status tracking
+- **HTTP Endpoint Health** — HEAD requests to configured URLs with status tracking and redirect control
 - **Visual Status** — tray icon changes color (green/yellow/red) based on overall health
 - **Live Status Dialog** — auto-refreshing status window (2s interval) with selectable text
 - **Rolling Statistics** — last ping, 5-minute rolling average, last failure timestamp per target
@@ -30,7 +30,16 @@ dotnet build
 ## Publishing (single-file executable)
 
 ```bash
-dotnet publish -c Release -r win-x64
+dotnet publish -c Release
+```
+
+Produces a trimmed, compressed, self-contained single-file exe (~47 MB).
+All publish settings are in the csproj — no extra flags needed.
+
+### Framework-dependent build (215 KB, requires .NET 8 Desktop Runtime)
+
+```bash
+dotnet publish -c Release -o ./publish-fxdep --no-self-contained /p:PublishTrimmed=false /p:EnableCompressionInSingleFile=false
 ```
 
 ## Tray Context Menu
@@ -100,6 +109,16 @@ Edit `config/targets.json` to define your monitored targets, or use the **Config
       "expectedStatusCode": 200,
       "pollIntervalSeconds": 60,
       "enabled": true
+    },
+    {
+      "name": "Auth-Protected App",
+      "type": "http",
+      "url": "https://myapp.example.com",
+      "expectedStatusCode": 302,
+      "followRedirects": false,
+      "timeoutMs": 5000,
+      "pollIntervalSeconds": 60,
+      "enabled": true
     }
   ]
 }
@@ -130,11 +149,12 @@ Each target has its own poll interval and can be individually enabled/disabled.
 |------|-------------|------------|
 | `ping` | ICMP echo request | `host` (`"auto"` = detect gateway), `thresholdMs` (latency above = degraded) |
 | `dns` | DNS name resolution | `host` (DNS server), `resolve` (domain to resolve) |
-| `http` | HTTP HEAD request | `url`, `expectedStatusCode` |
+| `http` | HTTP HEAD request | `url`, `expectedStatusCode`, `followRedirects` (default: true) |
 
 ## Architecture
 
-- **.NET 8 Self-Contained** — publishes as a single executable, no runtime needed
+- **.NET 8 Self-Contained** — publishes as a single executable (~47 MB), no runtime needed
+- **Trimmed + Compressed** — IL trimming (partial) and single-file compression enabled by default
 - **WinForms** — lightest managed UI framework, used only for tray icon and dialogs
 - **Per-target async polling** — each target runs on its own async timer independently
 - **Live status dialog** — auto-refreshing, auto-sizing, single-instance, selectable text

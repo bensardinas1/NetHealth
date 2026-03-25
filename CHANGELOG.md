@@ -4,6 +4,18 @@ All notable changes to NetHealth will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.0] - 2026-03-25
+
+### Added
+- `followRedirects` option for HTTP targets (default: true). Set to false + `expectedStatusCode: 302` for sites behind OAuth/OIDC login redirects
+- "Follow Redirects" checkbox in target edit dialog for HTTP targets
+- HTTP status detail now shows actual protocol (HTTPS/HTTP) matching the URL scheme
+
+### Changed
+- Enabled IL trimming (partial) and single-file compression by default in csproj
+- Published exe reduced from 154 MB to ~47 MB with trimming + compression
+- Updated README with publish size and trimming details
+
 ## [0.3.1] - 2026-03-24
 
 ### Added

@@ -27,6 +27,7 @@ public sealed class TargetConfig
     // HTTP
     public string? Url { get; set; }
     public int ExpectedStatusCode { get; set; } = 200;
+    public bool FollowRedirects { get; set; } = true;
 
     [JsonIgnore]
     public string DisplayAddress => Type.ToLowerInvariant() switch
